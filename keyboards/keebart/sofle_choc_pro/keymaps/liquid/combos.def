@@ -1,0 +1,18 @@
+// essential
+COMB(CMB_AS_TAB, KC_TAB,  LALT_T(KC_S), LSFT_T(KC_D))
+COMB(CMB_JK_ENT, KC_ENT,  RCTL_T(KC_J), RSFT_T(KC_K))
+
+// shiftable special chars which have dedicated key on the keyboard
+COMB(CMB_JB_SCL, KC_SCLN,  RCTL_T(KC_J), RGUI_T(KC_BSPC))
+
+// dynamic macro recording
+COMB(CMB_DMREC, DM_REC1, LT(2, KC_SPC), RCTL_T(KC_J))
+
+// copy-paste
+COMB(CMB_XC_CUT,  LCTL(KC_X), KC_Z, KC_X)
+COMB(CMB_XC_CPY,  LCTL(KC_C), KC_X, KC_C)
+COMB(CMB_CV_PST,  LCTL(KC_V), KC_C, KC_V)
+
+// the effect of these combos are overwritten by inject.h
+COMB(CMB_HJ_HERE, KC_NO, RALT_T(KC_H), RCTL_T(KC_J))
+COMB(CMB_J_GRVWP, KC_NO, KC_GRV, RCTL_T(KC_J))
