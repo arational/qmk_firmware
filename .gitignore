@@ -128,3 +128,8 @@ compile_commands.json
 via*.json
 /keyboards/**/keymaps/via/*
 /keyboards/**/keymaps/vial/*
+
+# Unignore image files for print exports
+!exports/*.png
+!exports/*.svg
+!exports/*.pdf
