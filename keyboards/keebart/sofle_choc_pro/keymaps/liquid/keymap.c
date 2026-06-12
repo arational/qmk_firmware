@@ -19,6 +19,7 @@ enum custom_keycodes {
 };
 
 bool rec1_active = false;
+bool rec2_active = false;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [BASE] = LAYOUT_split_4x6_5(
@@ -85,46 +86,63 @@ bool get_combo_must_tap(uint16_t combo_index, combo_t *combo) {
  */
 
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-    // lower layer activity
-    if (LOWER == get_highest_layer(layer_state | default_layer_state)) {
-        RGB_MATRIX_INDICATOR_SET_COLOR(2, 255, 255, 255);
-        RGB_MATRIX_INDICATOR_SET_COLOR(32, 255, 255, 255);
-    }
+  // layer activity
+  switch (get_highest_layer(layer_state | default_layer_state)) {
+  case LOWER:
+    RGB_MATRIX_INDICATOR_SET_COLOR(2, 255, 255, 255);
+    RGB_MATRIX_INDICATOR_SET_COLOR(32, 255, 255, 255);
+    break;
+  case UPPER:
+    RGB_MATRIX_INDICATOR_SET_COLOR(1, 255, 255, 255);
+    RGB_MATRIX_INDICATOR_SET_COLOR(31, 255, 255, 255);
+    break;
+  case ADJUST:
+    RGB_MATRIX_INDICATOR_SET_COLOR(1, 255, 255, 255);
+    RGB_MATRIX_INDICATOR_SET_COLOR(2, 255, 255, 255);
+    RGB_MATRIX_INDICATOR_SET_COLOR(31, 255, 255, 255);
+    RGB_MATRIX_INDICATOR_SET_COLOR(32, 255, 255, 255);
+    break;
+  }
 
-    // upper layer activity
-    if (UPPER == get_highest_layer(layer_state)) {
-        RGB_MATRIX_INDICATOR_SET_COLOR(1, 255, 255, 255);
-        RGB_MATRIX_INDICATOR_SET_COLOR(31, 255, 255, 255);
-    }
+  // dynamic macro recording button
+  if (rec1_active) {
+    RGB_MATRIX_INDICATOR_SET_COLOR(39, 255, 0, 0);
+  }
+  if (rec2_active) {
+    RGB_MATRIX_INDICATOR_SET_COLOR(44, 255, 0, 0);
+  }
 
-    // adjust layer activity
-    if (ADJUST == get_highest_layer(layer_state)) {
-        RGB_MATRIX_INDICATOR_SET_COLOR(1, 255, 255, 255);
-        RGB_MATRIX_INDICATOR_SET_COLOR(2, 255, 255, 255);
-        RGB_MATRIX_INDICATOR_SET_COLOR(31, 255, 255, 255);
-        RGB_MATRIX_INDICATOR_SET_COLOR(32, 255, 255, 255);
-    }
-
-    // dynamic macro recording button
-    if (rec1_active) {
-        RGB_MATRIX_INDICATOR_SET_COLOR(39, 255, 0, 0);
-    }
-
-    // TODO: Make master sync caps word state to slave
-    if (is_caps_word_on()) {
-      //RGB_MATRIX_INDICATOR_SET_COLOR(14, 255, 255, 255);
-        RGB_MATRIX_INDICATOR_SET_COLOR(44, 255, 255, 255);
-    }
-    return false;
+  // TODO: Make master sync caps word state to slave
+  if (is_caps_word_on()) {
+    RGB_MATRIX_INDICATOR_SET_COLOR(14, 255, 255, 255);
+    RGB_MATRIX_INDICATOR_SET_COLOR(44, 255, 255, 255);
+  }
+  return false;
 };
 
 bool dynamic_macro_record_start_user(int8_t direction) {
-  rec1_active = true;
+  switch (direction) {
+  case 1:
+    rec1_active = true;
+    break;
+
+  case -1:
+    rec2_active = true;
+    break;
+  }
   return true;
 };
 
 bool dynamic_macro_record_end_user(int8_t direction) {
-  rec1_active = false;
+  switch (direction) {
+  case 1:
+    rec1_active = false;
+    break;
+
+  case -1:
+    rec2_active = false;
+    break;
+  }
   return true;
 };
 
