@@ -1,0 +1,26 @@
+#define BASE 0
+#define LOWER 1
+#define UPPER 2
+#define ADJUST 3
+
+// Left-hand home row mods
+#define HOME_A LGUI_T(KC_A)
+#define HOME_S LALT_T(KC_S)
+#define HOME_D LSFT_T(KC_D)
+#define HOME_F LCTL_T(KC_F)
+#define HOME_G RALT_T(KC_G)
+
+// Right-hand home row mods
+#define HOME_H RALT_T(KC_H)
+#define HOME_J RCTL_T(KC_J)
+#define HOME_K RSFT_T(KC_K)
+#define HOME_L LALT_T(KC_L)
+#define HOME_BS RGUI_T(KC_BSPC)
+
+// layer mods
+#define LL_EQL LT(LOWER, KC_EQUAL)
+#define LL_MINS LT(LOWER, KC_MINUS)
+#define LU_SPC LT(UPPER, KC_SPC)
+#define LA_MO MO(ADJUST)
+#define LA_0 LT(ADJUST, KC_0)
+#define LA_SPC LT(ADJUST, KC_SPC)
