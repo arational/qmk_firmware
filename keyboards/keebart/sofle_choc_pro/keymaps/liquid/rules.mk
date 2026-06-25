@@ -8,3 +8,5 @@ COMBO_ENABLE = yes
 VPATH += keyboards/gboards
 LAYER_LOCK_ENABLE = yes
 CAPS_WORD_ENABLE = yes
+MIDI_ENABLE = yes
+SPLIT_KEYBOARD = yes

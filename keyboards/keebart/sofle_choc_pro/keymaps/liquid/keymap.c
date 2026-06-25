@@ -4,6 +4,7 @@
 #include QMK_KEYBOARD_H
 #include "g/keymap_combo.h"
 #include "alias.def"
+#include "transactions.h"
 
 enum custom_keycodes {
   QMK_0 = SAFE_RANGE,
@@ -18,6 +19,8 @@ enum custom_keycodes {
   QMK_9
 };
 
+const int ch2rgbidx[] = {26, 25, 17, 16, 7, 6, 36, 37, 46, 47, 55, 56};
+
 bool rec1_active = false;
 bool rec2_active = false;
 
@@ -27,7 +30,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_LCBR, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_RCBR,
   KC_LPRN, HOME_A,  HOME_S,  HOME_D,  HOME_F,  HOME_G,                    HOME_H,  HOME_J,  HOME_K,  HOME_L,  HOME_BS, KC_RPRN,
   KC_LBRC, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE, KC_MPLY, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RBRC,
-  /*             */ KC_NO,   QK_REP,  KC_GRV,  LL_EQL,  LU_SPC,  LU_SPC,  LL_MINS, KC_QUOT, KC_RGUI, KC_PSCR
+  /*             */ LM_MO,   QK_REP,  KC_GRV,  LL_EQL,  LU_SPC,  LU_SPC,  LL_MINS, KC_QUOT, KC_RGUI, KC_PSCR
 ),
 [LOWER] = LAYOUT_split_4x6_5(
   _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
@@ -49,6 +52,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, PB_6,    PB_7,    PB_8,    PB_9,    PB_10,                     _______, KC_F5,   KC_F6,   KC_F7,   KC_F8,   _______,
   _______, PB_11,   PB_12,   PB_13,   PB_14,   PB_15,   PB_16,   _______, _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   _______,
   /*             */ _______, _______, _______, QK_LLCK, QK_LLCK, QK_LLCK, QK_LLCK, _______, _______, _______
+),
+[MIDI] = LAYOUT_split_4x6_5(
+  MI_CH1,  MI_CH2,  MI_CH3,  MI_CH4,  MI_CH5,  MI_CH6,                    MI_CH7,  MI_CH8,  MI_CH9,  MI_CH10, MI_CH11, MI_CH12,
+  MI_C2,   MI_Cs2,  MI_D2,   MI_Ds2,  MI_E2,   MI_F2,                     MI_Fs2,  MI_G2,   MI_Gs2,  MI_A2,   MI_As2,  MI_B2,
+  MI_C3,   MI_Cs3,  MI_D3,   MI_Ds3,  MI_E3,   MI_F3,                     MI_Fs3,  MI_G3,   MI_Gs3,  MI_A3,   MI_As3,  MI_B3,
+  MI_C4,   MI_Cs4,  MI_D4,   MI_Ds4,  MI_E4,   MI_F4,   _______, _______, MI_Fs4,  MI_G4,   MI_Gs4,  MI_A4,   MI_As4,  MI_B4,
+  /*             */ _______, _______, _______, QK_LLCK, QK_LLCK, QK_LLCK, QK_LLCK, _______, _______, _______
 )
 };
 
@@ -58,6 +68,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     [LOWER] = { ENCODER_CCW_CW(KC_PGUP, KC_PGDN), ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
     [UPPER] = { ENCODER_CCW_CW(RM_PREV, RM_NEXT), ENCODER_CCW_CW(RM_SPDD, RM_SPDU) },
     [ADJUST] = { ENCODER_CCW_CW(RM_PREV, RM_NEXT), ENCODER_CCW_CW(RM_SPDD, RM_SPDU) },
+    [MIDI] = { ENCODER_CCW_CW(MI_VELU, MI_VELD), ENCODER_CCW_CW(MI_OCTU, MI_OCTD) },
 };
 #endif
 
@@ -67,6 +78,38 @@ bool get_combo_must_tap(uint16_t combo_index, combo_t *combo) {
   return true;
 };
 #endif
+
+#ifdef MIDI_ADVANCED
+typedef struct _master_to_slave_user_a_t {
+  uint8_t midi_channel;
+} master_to_slave_user_a_t;
+
+void user_sync_a_slave_handler(uint8_t in_buflen, const void* in_data, uint8_t out_buflen, void* out_data) {
+  const master_to_slave_user_a_t *m2s = (const master_to_slave_user_a_t*)in_data;
+  midi_config.channel = m2s->midi_channel;
+}
+#endif
+
+void keyboard_post_init_user(void) {
+#ifdef MIDI_ADVANCED
+  transaction_register_rpc(USER_SYNC_A, user_sync_a_slave_handler);
+#endif
+
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+#ifdef MIDI_ADVANCED
+  case MIDI_CHANNEL_MIN ... MIDI_CHANNEL_MAX:
+    if (record->event.pressed && is_keyboard_master()) {
+      master_to_slave_user_a_t m2s = {keycode - MIDI_CHANNEL_MIN};
+      transaction_rpc_send(USER_SYNC_A, sizeof(m2s), &m2s);
+    }
+#endif
+  }
+
+  return true;
+}
 
 #ifdef RGB_MATRIX_ENABLE
 
@@ -101,6 +144,10 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     RGB_MATRIX_INDICATOR_SET_COLOR(2, 255, 255, 255);
     RGB_MATRIX_INDICATOR_SET_COLOR(31, 255, 255, 255);
     RGB_MATRIX_INDICATOR_SET_COLOR(32, 255, 255, 255);
+    break;
+  case MIDI:
+    RGB_MATRIX_INDICATOR_SET_COLOR(21, 255, 255, 255);
+    RGB_MATRIX_INDICATOR_SET_COLOR(ch2rgbidx[midi_config.channel], 255, 255, 255);
     break;
   }
 
