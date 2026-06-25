@@ -90,11 +90,36 @@ void user_sync_a_slave_handler(uint8_t in_buflen, const void* in_data, uint8_t o
 }
 #endif
 
+#ifdef CAPS_WORD_ENABLE
+bool caps_word_active = false;
+
+typedef struct _master_to_slave_user_b_t {
+  bool caps_word_active;
+} master_to_slave_user_b_t;
+
+void user_sync_b_slave_handler(uint8_t in_buflen, const void* in_data, uint8_t out_buflen, void* out_data) {
+  const master_to_slave_user_b_t *m2s = (const master_to_slave_user_b_t*)in_data;
+  caps_word_active = m2s->caps_word_active;
+}
+
+void caps_word_set_user(bool active) {
+  caps_word_active = active;
+
+  if (is_keyboard_master()) {
+    master_to_slave_user_b_t m2s = {active};
+    transaction_rpc_send(USER_SYNC_B, sizeof(m2s), &m2s);
+  }
+}
+#endif
+
 void keyboard_post_init_user(void) {
 #ifdef MIDI_ADVANCED
   transaction_register_rpc(USER_SYNC_A, user_sync_a_slave_handler);
 #endif
 
+#ifdef CAPS_WORD_ENABLE
+  transaction_register_rpc(USER_SYNC_B, user_sync_b_slave_handler);
+#endif
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -159,11 +184,13 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     RGB_MATRIX_INDICATOR_SET_COLOR(44, 255, 0, 0);
   }
 
-  // TODO: Make master sync caps word state to slave
-  if (is_caps_word_on()) {
+#ifdef CAPS_WORD_ENABLE
+  if (caps_word_active) {
     RGB_MATRIX_INDICATOR_SET_COLOR(14, 255, 255, 255);
     RGB_MATRIX_INDICATOR_SET_COLOR(44, 255, 255, 255);
   }
+#endif
+
   return false;
 };
 
