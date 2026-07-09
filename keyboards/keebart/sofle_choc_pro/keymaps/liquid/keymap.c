@@ -26,11 +26,11 @@ bool rec2_active = false;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [BASE] = LAYOUT_split_4x6_5(
-  KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                      KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_DEL,
-  KC_LCBR, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_RCBR,
-  KC_LPRN, HOME_A,  HOME_S,  HOME_D,  HOME_F,  HOME_G,                    HOME_H,  HOME_J,  HOME_K,  HOME_L,  HOME_BS, KC_RPRN,
-  KC_LBRC, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE, KC_MPLY, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RBRC,
-  /*             */ LM_MO,   QK_REP,  KC_GRV,  LL_EQL,  LU_SPC,  LU_SPC,  LL_MINS, KC_QUOT, KC_RGUI, KC_PSCR
+  _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
+  _______, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    _______,
+  _______, HOME_A,  HOME_S,  HOME_D,  HOME_F,  HOME_G,                    HOME_H,  HOME_J,  HOME_K,  HOME_L,  HOME_BS, _______,
+  _______, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE, KC_MPLY, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, _______,
+  /*             */ LM_MO,   QK_REP,  _______, LL_EQL,  LU_SPC,  LU_SPC,  LL_MINS, _______, _______, KC_PSCR
 ),
 [LOWER] = LAYOUT_split_4x6_5(
   _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
@@ -40,14 +40,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   /*             */ _______, _______, _______, QK_LLCK, LA_SPC,  LA_SPC,  QK_LLCK, _______, _______, _______
 ),
 [UPPER] = LAYOUT_split_4x6_5(
-  QK_BOOT, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, QK_BOOT,
+  _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
   _______, _______, KC_PGUP, KC_UP,   KC_PGDN, KC_VOLU,                   KC_MINS, KC_7,    KC_8,    KC_9,    KC_PLUS, _______,
   _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, KC_VOLD,                   KC_EQL,  KC_4,    KC_5,    KC_6,    _______, _______,
   _______, _______, _______, _______, _______, KC_MUTE, _______, RM_TOGG, KC_ASTR, KC_1,    KC_2,    KC_3,    _______, _______,
   /*             */ _______, _______, _______, LA_MO,   QK_LLCK, QK_LLCK, LA_0,    KC_DOT,  KC_COMM, _______
 ),
 [ADJUST] = LAYOUT_split_4x6_5(
-  _______, QMK_1,   QMK_2,   QMK_3,   QMK_4,   QMK_5,                     QMK_6,   QMK_7,   QMK_8,   QMK_9,   QMK_0,   _______,
+  QK_BOOT, QMK_1,   QMK_2,   QMK_3,   QMK_4,   QMK_5,                     QMK_6,   QMK_7,   QMK_8,   QMK_9,   QMK_0,   QK_BOOT,
   _______, PB_1,    PB_2,    PB_3,    PB_4,    PB_5,                      _______, KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______,
   _______, PB_6,    PB_7,    PB_8,    PB_9,    PB_10,                     _______, KC_F5,   KC_F6,   KC_F7,   KC_F8,   _______,
   _______, PB_11,   PB_12,   PB_13,   PB_14,   PB_15,   PB_16,   _______, _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   _______,
