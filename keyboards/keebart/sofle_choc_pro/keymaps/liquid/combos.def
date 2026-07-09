@@ -7,10 +7,6 @@ COMB(CMB_ESC, KC_ESC, KC_W, KC_E)
 COMB(CMB_DEL, KC_DEL, KC_I, KC_O)
 
 // shiftable special chars which have dedicated key on a normal QUERTY keyboard
-COMB(CMB_SCLN, KC_SCLN, HOME_J, LL_MINS)
-COMB(CMB_QUOT, KC_QUOT, KC_M, LL_MINS)
-COMB(CMB_GRV,  KC_GRV, HOME_F, LL_EQL)
-
 COMB(CMB_SCLN, KC_SCLN, KC_COMM, KC_DOT)
 COMB(CMB_BSLS, KC_BSLS, HOME_J,  KC_SLSH)
 COMB(CMB_QUOT, KC_QUOT, KC_M,    KC_COMM)
@@ -54,6 +50,9 @@ COMB(CMB_DMPLY2, DM_PLY2, LU_SPC, HOME_D)
 COMB(CMB_CUT,  LCTL(KC_X), KC_Z, KC_X)
 COMB(CMB_CPY,  LCTL(KC_C), KC_X, KC_C)
 COMB(CMB_PST,  LCTL(KC_V), KC_C, KC_V)
+
+// misc
+COMB(CMB_PSCR, KC_PSCR, KC_O, KC_P)
 
 // the effect of these combos are overwritten by inject.h
 COMB(CMB_HJ_HERE, KC_NO, HOME_H, HOME_J)
