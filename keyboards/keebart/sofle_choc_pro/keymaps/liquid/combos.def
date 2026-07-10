@@ -8,7 +8,7 @@ COMB(CMB_DEL, KC_DEL, KC_I, KC_O)
 
 // shiftable special chars which have dedicated key on a normal QUERTY keyboard
 COMB(CMB_SCLN, KC_SCLN, KC_COMM, KC_DOT)
-COMB(CMB_BSLS, KC_BSLS, HOME_J,  KC_SLSH)
+COMB(CMB_BSLS, KC_BSLS, LL_MINS, KC_SLSH)
 COMB(CMB_QUOT, KC_QUOT, KC_M,    KC_COMM)
 COMB(CMB_GRV,  KC_GRV,  KC_V,    KC_B)
 
