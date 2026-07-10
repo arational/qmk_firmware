@@ -75,7 +75,8 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 #ifdef COMBO_MUST_TAP_PER_COMBO
 bool get_combo_must_tap(uint16_t combo_index, combo_t *combo) {
   // makes all combos to be tap-only
-  return true;
+  return !((CMB_ADJUSTR == combo_index) ||
+           (CMB_ADJUSTL == combo_index));
 };
 #endif
 

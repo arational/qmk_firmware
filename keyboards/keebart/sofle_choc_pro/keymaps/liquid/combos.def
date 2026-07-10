@@ -57,3 +57,7 @@ COMB(CMB_PSCR, KC_PSCR, KC_O, KC_P)
 // the effect of these combos are overwritten by inject.h
 COMB(CMB_HERE, KC_NO, KC_LBRC, KC_LPRN)
 COMB(CMB_GRVWP, KC_NO, KC_X, KC_V)
+
+// mod for adjust layer
+COMB(CMB_ADJUSTR, LA_MO, HOME_J, LL_MINS)
+COMB(CMB_ADJUSTL, LA_MO, HOME_F, LL_EQL)
