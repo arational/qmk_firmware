@@ -50,13 +50,13 @@ COMB(CMB_DMPLY2, DM_PLY2, LU_SPC, HOME_D)
 COMB(CMB_CUT,  LCTL(KC_X), KC_Z, KC_X)
 COMB(CMB_CPY,  LCTL(KC_C), KC_X, KC_C)
 COMB(CMB_PST,  LCTL(KC_V), KC_C, KC_V)
+// paste from clipboard surrounded by markdown link with label "here"
+SUBS(CMB_HERE, "[here](" SS_LCTL("v") ")", KC_LBRC, KC_LPRN)
+// cut out marked text and paste it surrounded by grv quotes
+SUBS(CMB_GRVWP, SS_LCTL("x") "`" SS_LCTL("v") "`", KC_X, KC_V)
 
 // misc
 COMB(CMB_PSCR, KC_PSCR, KC_O, KC_P)
-
-// the effect of these combos are overwritten by inject.h
-COMB(CMB_HERE, KC_NO, KC_LBRC, KC_LPRN)
-COMB(CMB_GRVWP, KC_NO, KC_X, KC_V)
 
 // mod for adjust layer
 COMB(CMB_ADJUSTR, LA_MO, HOME_J, LL_MINS)
