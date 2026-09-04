@@ -72,6 +72,33 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 };
 #endif
 
+#ifdef PERMISSIVE_HOLD_PER_KEY
+bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    // Disable only for shift keys
+  case HOME_D:
+  case HOME_K:
+    return false;
+  default:
+    return true;
+  }
+}
+#endif
+
+#ifdef HOLD_ON_OTHER_KEY_PRESS_PER_KEY
+bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    // Enable only for shift keys
+  case HOME_D:
+  case HOME_K:
+    return true;
+  default:
+    return false;
+  }
+}
+#endif
+
+
 #ifdef COMBO_MUST_TAP_PER_COMBO
 bool get_combo_must_tap(uint16_t combo_index, combo_t *combo) {
   // makes all combos to be tap-only
