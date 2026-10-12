@@ -62,9 +62,12 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 #ifdef PERMISSIVE_HOLD_PER_KEY
 bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    // Disable only for shift keys
+    // Disable only for shift mod and layer mods
   case HOME_D:
   case HOME_K:
+  case LL_EQL:
+  case LL_MINS:
+  case LU_SPC:
     return false;
   default:
     return true;
@@ -75,9 +78,12 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
 #ifdef HOLD_ON_OTHER_KEY_PRESS_PER_KEY
 bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    // Enable only for shift keys
+    // Enable only for shift mod and layer mods
   case HOME_D:
   case HOME_K:
+  case LL_EQL:
+  case LL_MINS:
+  case LU_SPC:
     return true;
   default:
     return false;
@@ -85,12 +91,39 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
 }
 #endif
 
+#ifdef CHORDAL_HOLD
+bool get_chordal_hold(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record, uint16_t other_keycode, keyrecord_t* other_record) {
+    switch (other_keycode) {
+      // if combo outputs a specific keycode ALWAYS allow holding for:
+    case KC_TAB:
+    case KC_ENT:
+    case KC_ESC:
+    case KC_DEL:
+    case KC_SCLN:
+    case KC_BSLS:
+    case KC_QUOT:
+    case KC_GRV:
+    case RALT(KC_U):
+    case RALT(KC_O):
+    case RALT(KC_A):
+      return true;
+
+    default:
+      // Fall back to standard Chordal Hold rules for regular keys
+      return get_chordal_hold_default(tap_hold_record, other_record);
+    }
+}
+#endif
 
 #ifdef COMBO_MUST_TAP_PER_COMBO
 bool get_combo_must_tap(uint16_t combo_index, combo_t *combo) {
-  // makes all combos to be tap-only
-  return !((CMB_ADJUSTR == combo_index) ||
-           (CMB_ADJUSTL == combo_index));
+  switch (combo_index) {
+  case CMB_TAB:
+  case CMB_ENT:
+    return true;
+  default:
+    return false;
+  }
 };
 #endif
 
