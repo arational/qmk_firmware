@@ -6,19 +6,6 @@
 #include "alias.def"
 #include "transactions.h"
 
-enum custom_keycodes {
-  QMK_0 = SAFE_RANGE,
-  QMK_1,
-  QMK_2,
-  QMK_3,
-  QMK_4,
-  QMK_5,
-  QMK_6,
-  QMK_7,
-  QMK_8,
-  QMK_9
-};
-
 const int ch2rgbidx[] = {26, 25, 17, 16, 7, 6, 36, 37, 46, 47, 55, 56};
 
 bool rec1_active = false;
@@ -47,10 +34,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   /*             */ _______, _______, _______, LA_MO,   QK_LLCK, QK_LLCK, LA_0,    KC_DOT,  KC_COMM, _______
 ),
 [ADJUST] = LAYOUT_split_4x6_5(
-  QK_BOOT, QMK_1,   QMK_2,   QMK_3,   QMK_4,   QMK_5,                     QMK_6,   QMK_7,   QMK_8,   QMK_9,   QMK_0,   QK_BOOT,
-  _______, PB_1,    PB_2,    PB_3,    PB_4,    PB_5,                      _______, KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______,
-  _______, PB_6,    PB_7,    PB_8,    PB_9,    PB_10,                     _______, KC_F5,   KC_F6,   KC_F7,   KC_F8,   _______,
-  _______, PB_11,   PB_12,   PB_13,   PB_14,   PB_15,   PB_16,   _______, _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   _______,
+  QK_BOOT, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, QK_BOOT,
+  _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
+  _______, PB_6,    PB_7,    PB_8,    PB_9,    PB_10,                     _______, _______, _______, _______, _______, _______,
+  _______, PB_11,   PB_12,   PB_13,   PB_14,   PB_15,   PB_16,   _______, _______, _______, _______, _______, _______, _______,
   /*             */ _______, _______, _______, QK_LLCK, QK_LLCK, QK_LLCK, QK_LLCK, _______, _______, _______
 ),
 [MIDI] = LAYOUT_split_4x6_5(
